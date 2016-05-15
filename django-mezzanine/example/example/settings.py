@@ -90,6 +90,10 @@ USE_MODELTRANSLATION = False
 # MAIN DJANGO SETTINGS #
 ########################
 
+# Make these unique, and don't share it with anybody.
+SECRET_KEY = ")p1&_b=ak0nh&8t2mvw-0gljiqew^*m@)zrm1t)i@%f@6zm+e="
+NEVERCACHE_KEY = "hroc^a71qebrn7ydxs#h!a6faag+0nhq*eap^1!fxk8a32sdt@"
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -118,7 +122,7 @@ LANGUAGES = (
 # A boolean that turns on/off debug mode. When set to ``True``, stack traces
 # are displayed for error pages. Should always be set to ``False`` in
 # production. Best set to ``True`` in local_settings.py
-DEBUG = False
+DEBUG = True
 
 # Whether a user's session cookie expires when the Web browser is closed.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -141,19 +145,12 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 #############
 
 DATABASES = {
-    "default": {
-        # Add "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
-        "ENGINE": "django.db.backends.",
-        # DB name or path to database file if using sqlite3.
-        "NAME": "",
-        # Not used with sqlite3.
-        "USER": "",
-        # Not used with sqlite3.
-        "PASSWORD": "",
-        # Set to empty string for localhost. Not used with sqlite3.
-        "HOST": "",
-        # Set to empty string for default. Not used with sqlite3.
-        "PORT": "",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
@@ -297,27 +294,28 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_GRAPPELLI,
 )
 
-##################
-# LOCAL SETTINGS #
-##################
+###################
+# DEPLOY SETTINGS #
+###################
 
-# Allow any settings to be defined in local_settings.py which should be
-# ignored in your version control system allowing for settings to be
-# defined per machine.
+# Domains for public site
+# ALLOWED_HOSTS = [""]
 
-# Instead of doing "from .local_settings import *", we use exec so that
-# local_settings has full access to everything defined in this module.
-# Also force into sys.modules so it's visible to Django's autoreload.
+# These settings are used by the default fabfile.py provided.
+# Check fabfile.py for defaults.
 
-f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
-if os.path.exists(f):
-    import sys
-    import imp
-    module_name = "%s.local_settings" % PROJECT_APP
-    module = imp.new_module(module_name)
-    module.__file__ = f
-    sys.modules[module_name] = module
-    exec(open(f, "rb").read())
+# FABRIC = {
+#     "DEPLOY_TOOL": "rsync",  # Deploy with "git", "hg", or "rsync"
+#     "SSH_USER": "",  # VPS SSH username
+#     "HOSTS": [""],  # The IP address of your VPS
+#     "DOMAINS": ALLOWED_HOSTS,  # Edit domains in ALLOWED_HOSTS
+#     "REQUIREMENTS_PATH": "requirements.txt",  # Project's pip requirements
+#     "LOCALE": "en_US.UTF-8",  # Should end with ".UTF-8"
+#     "DB_PASS": "",  # Live database password
+#     "ADMIN_PASS": "",  # Live admin user password
+#     "SECRET_KEY": SECRET_KEY,
+#     "NEVERCACHE_KEY": NEVERCACHE_KEY,
+# }
 
 
 ####################
